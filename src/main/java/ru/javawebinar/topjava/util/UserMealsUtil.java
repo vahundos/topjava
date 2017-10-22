@@ -32,16 +32,12 @@ public class UserMealsUtil {
         Map<LocalDate, Integer> caloriesOnDayMap = new HashMap<>();
         for (UserMeal meal : mealList) {
             LocalDate localDate = meal.getDateTime().toLocalDate();
-            if (caloriesOnDayMap.containsKey(localDate))
-                caloriesOnDayMap.put(localDate, caloriesOnDayMap.get(localDate) + meal.getCalories());
-            else
-                caloriesOnDayMap.put(localDate, meal.getCalories());
+            caloriesOnDayMap.merge(localDate, meal.getCalories(), (c1, c2) -> c1 + c2);
         }
 
-        boolean exceed;
         List<UserMealWithExceed> filteredList = new ArrayList<>();
         for (UserMeal meal : mealList) {
-            exceed = caloriesOnDayMap.get(meal.getDateTime().toLocalDate()) > caloriesPerDay;
+            boolean exceed = caloriesOnDayMap.get(meal.getDateTime().toLocalDate()) > caloriesPerDay;
             if (TimeUtil.isBetween(meal.getDateTime().toLocalTime(), startTime, endTime))
                 filteredList.add(new UserMealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(),
                         exceed));
