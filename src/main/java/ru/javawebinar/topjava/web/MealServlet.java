@@ -8,6 +8,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.ServletConfig;
@@ -16,7 +17,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
@@ -90,7 +94,15 @@ public class MealServlet extends HttpServlet {
             case "all":
             default:
                 log.info("getAll");
-                request.setAttribute("meals", controller.getWithExceed());
+                if (request.getParameter("fromDate") != null) {
+                    LocalDate fromDate = DateTimeUtil.parseToLocalDate(request, "fromDate");
+                    LocalDate toDate = DateTimeUtil.parseToLocalDate(request, "toDate");
+                    LocalTime fromTime = DateTimeUtil.parseToLocalTime(request, "fromTime");
+                    LocalTime toTime = DateTimeUtil.parseToLocalTime(request, "toTime");
+                    request.setAttribute("meals", controller.getWithExceedFiltered(fromDate, fromTime, toDate, toTime));
+                } else {
+                    request.setAttribute("meals", controller.getWithExceed());
+                }
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }
