@@ -10,6 +10,8 @@ import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.ValidationUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.*;
@@ -53,5 +55,13 @@ public class MealRestController {
         int userId = AuthorizedUser.id();
         log.info("get with exceed userId={}", userId);
         return service.getWithExceed(userId, AuthorizedUser.getCaloriesPerDay());
+    }
+
+    public List<MealWithExceed> getWithExceedFiltered(LocalDate startDate, LocalTime startTime, LocalDate endDate,
+                                                      LocalTime endTime) {
+        int userId = AuthorizedUser.id();
+        log.info("get with exceed filtered userId={}", userId);
+        return service.getWithExceedFiltered(userId, AuthorizedUser.getCaloriesPerDay(), startDate, startTime, endDate,
+                endTime);
     }
 }
