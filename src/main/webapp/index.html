@@ -8,7 +8,22 @@
 <hr>
 <ul>
     <li><a href="users">Users</a></li>
-    <li><a href="meals">Meals</a></li>
+    <li><a href="meals?authUserId=1" id="mealRef">Meals</a></li>
+    <li>
+        <script>
+            function afterChangeValue() {
+                var comboBox = document.getElementById('comboBoxId');
+                var authUserId = comboBox.options[comboBox.selectedIndex].value;
+                var mealRef = document.getElementById('mealRef');
+                mealRef.setAttribute("href", "meals?authUserId="+authUserId);
+            }
+        </script>
+        <select id="comboBoxId" onchange="afterChangeValue()">
+            <option selected>1</option>
+            <option>2</option>
+        </select>
+        user id
+    </li>
 </ul>
 </body>
 </html>
