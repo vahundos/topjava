@@ -29,7 +29,8 @@ public class MealRestController {
     public Meal create(Meal meal) {
         log.info("create {}", meal);
         checkNew(meal);
-        return service.create(meal, AuthorizedUser.id());
+        Meal tmp = new Meal(meal.getDateTime(), meal.getDescription(), meal.getCalories(), AuthorizedUser.id());
+        return service.create(tmp, AuthorizedUser.id());
     }
 
     public void delete(int mealId) {
@@ -46,7 +47,7 @@ public class MealRestController {
 
     public Meal update(Meal meal, int mealId) {
         int userId = AuthorizedUser.id();
-        log.info("update meal={}, mealId={}, userId={}", meal, meal, userId);
+        log.info("update meal={}, mealId={}, userId={}", meal, meal.getId(), userId);
         assureIdConsistent(meal, mealId);
         return service.update(meal, userId);
     }
