@@ -5,11 +5,15 @@ import ru.javawebinar.topjava.model.Meal;
 import java.util.Collection;
 
 public interface MealRepository {
-    Meal save(Meal meal);
+    // null is meal.userId != userId
+    Meal save(Meal meal, int userId);
 
-    void delete(int id);
+    // false is meal.userId != userId
+    // or mealId does't exist
+    boolean delete(int id, int userId);
 
-    Meal get(int id);
+    // null if meal.userId != userId
+    Meal get(int id, int userId);
 
-    Collection<Meal> getAll();
+    Collection<Meal> getAll(int userId);
 }
