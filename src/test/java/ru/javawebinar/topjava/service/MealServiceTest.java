@@ -1,10 +1,15 @@
 package ru.javawebinar.topjava.service;
 
 import org.hamcrest.CoreMatchers;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -16,6 +21,8 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
 
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
@@ -29,12 +36,42 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
 
+    private static List<String> testTimeInfo = new ArrayList<>();
+
     static {
         SLF4JBridgeHandler.install();
     }
 
+    private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
+    @Rule
+    public TestWatcher watcher = new TestWatcher() {
+
+        private long startTime;
+
+        @Override
+        protected void starting(Description description) {
+            startTime = System.currentTimeMillis();
+        }
+
+        @Override
+        protected void finished(Description description) {
+            String testTime = String.format("%s - %d millis", description, System.currentTimeMillis() - startTime);
+            testTimeInfo.add(testTime);
+            log.debug(testTime);
+        }
+    };
+
+    @ClassRule
+    public static TestWatcher classWatcher = new TestWatcher() {
+        @Override
+        protected void finished(Description description) {
+            testTimeInfo.forEach(System.out::println);
+        }
+    };
 
     @Autowired
     private MealService service;
