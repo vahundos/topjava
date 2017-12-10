@@ -57,6 +57,10 @@
                 <version>2.20.1</version>
                 <configuration>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
+                    <excludes>
+                        <exclude>**/InMemoryAdminRestControllerSpringTest</exclude>
+                        <exclude>**/InMemoryAdminRestControllerTest</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
