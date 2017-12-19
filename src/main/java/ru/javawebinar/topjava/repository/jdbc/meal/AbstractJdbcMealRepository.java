@@ -76,4 +76,9 @@ public abstract class AbstractJdbcMealRepository implements MealRepository {
 
     @Override
     public abstract List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId);
+
+    @Override
+    public Meal getWithUser(int id) {
+        throw new UnsupportedOperationException("only for datajpa implementation");
+    }
 }
