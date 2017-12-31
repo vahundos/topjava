@@ -27,7 +27,7 @@ public class MealAjaxController extends AbstractMealController {
 
     @PostMapping
     public void createOrUpdate(@RequestParam("id") Integer id,
-                               @RequestParam("dateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime,
+                               @RequestParam("dateTime") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm") LocalDateTime dateTime,
                                @RequestParam("description") String description,
                                @RequestParam("calories") int calories) {
         Meal meal = new Meal(id, dateTime, description, calories);

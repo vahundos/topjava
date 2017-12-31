@@ -32,4 +32,7 @@ $(function () {
         ]
     });
     makeEditable();
+    $("#dateTime").datetimepicker({
+        format:'d-m-Y H:i'
+    });
 });
