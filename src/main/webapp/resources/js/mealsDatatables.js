@@ -51,6 +51,11 @@ $(function () {
         applyFilter();
         return false;
     });
+
+    $("#clearFilter").click(function () {
+        clearFilter();
+        return false;
+    })
 });
 
 function applyFilter() {
@@ -64,4 +69,12 @@ function applyFilter() {
             successNoty("Filtered")
         }
     });
+}
+
+function clearFilter() {
+    var inputs = $("#filterForm").find(":input");
+    $(inputs).each(function () {
+            $(this).val("");
+    });
+    applyFilter();
 }

@@ -32,6 +32,7 @@
                     <dd><input type="text" name="endTime" value="${param.endTime}"></dd>
                 </dl>
                 <button type="button" id="applyFilter"><spring:message code="meal.filter"/></button>
+                <button type="button" id="clearFilter"><spring:message code="meal.clearFilter"/></button>
             </form>
             <hr>
             <a class="btn btn-primary" onclick="add()">
