@@ -39,4 +39,20 @@ $(function () {
         ]
     });
     makeEditable();
+
+    $(".userActivity").change(function () {
+        var active = this.checked;
+        var userId = $(this).closest("tr").attr("id");
+        $.ajax({
+            url: ajaxUrl + "availability",
+            type: "POST",
+            data: {
+                id: userId,
+                enabled: active
+            },
+            success: function () {
+                successNoty("Attribute changed");
+            }
+        });
+    })
 });
