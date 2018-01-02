@@ -33,9 +33,23 @@ function deleteRow(id) {
 }
 
 function updateTable() {
-    $.get(ajaxUrl, function (data) {
-        datatableApi.clear().rows.add(data).draw();
-    });
+    var filtered = false;
+    var inputs = $("#filterForm").find(":input");
+    if (inputs !== undefined) {
+        $(inputs).each(function () {
+            if ($(this).val()) {
+                applyFilter();
+                filtered = true;
+                return false;
+            }
+        })
+    }
+
+    if (!filtered) {
+        $.get(ajaxUrl, function (data) {
+            datatableApi.clear().rows.add(data).draw();
+        });
+    }
 }
 
 function save() {

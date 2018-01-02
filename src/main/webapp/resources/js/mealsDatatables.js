@@ -32,7 +32,36 @@ $(function () {
         ]
     });
     makeEditable();
+
+    $("input[name='startDate'], input[name='endDate']").datetimepicker({
+        timepicker: false,
+        format: 'd-m-Y'
+    });
+
+    $("input[name='startTime'], input[name='endTime']").datetimepicker({
+        datepicker: false,
+        format: 'H:i'
+    });
+
     $("#dateTime").datetimepicker({
         format:'d-m-Y H:i'
     });
+
+    $("#applyFilter").click(function() {
+        applyFilter();
+        return false;
+    });
 });
+
+function applyFilter() {
+    var form = $("#filterForm");
+    $.ajax({
+        url: ajaxUrl + "/filter",
+        type: "POST",
+        data: form.serialize(),
+        success: function (data) {
+            datatableApi.clear().rows.add(data).draw();
+            successNoty("Filtered")
+        }
+    });
+}
