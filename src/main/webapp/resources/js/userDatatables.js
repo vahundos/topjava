@@ -41,8 +41,9 @@ $(function () {
     makeEditable();
 
     $(".userActivity").change(function () {
+        var trElement = $(this).closest("tr");
         var active = this.checked;
-        var userId = $(this).closest("tr").attr("id");
+        var userId = trElement.attr("id");
         $.ajax({
             url: ajaxUrl + "availability",
             type: "POST",
@@ -51,6 +52,11 @@ $(function () {
                 enabled: active
             },
             success: function () {
+                if (active) {
+                    trElement.removeClass("disabledUser");
+                } else {
+                    trElement.addClass("disabledUser");
+                }
                 successNoty("Attribute changed");
             }
         });
