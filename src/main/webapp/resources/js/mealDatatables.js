@@ -69,4 +69,8 @@ $(function () {
         datepicker: false,
         format: 'H:i'
     });
+
+    $('#dateTime').datetimepicker({
+        format: 'Y-m-d H:i'
+    });
 });
