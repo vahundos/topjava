@@ -59,4 +59,14 @@ $(function () {
         }
     });
     makeEditable();
+
+    $("input[name='startDate'], input[name='endDate']").datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d'
+    });
+
+    $("input[name='startTime'], input[name='endTime']").datetimepicker({
+        datepicker: false,
+        format: 'H:i'
+    });
 });
