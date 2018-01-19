@@ -86,13 +86,27 @@ public class AdminRestControllerTest extends AbstractControllerTest {
         User updated = new User(USER);
         updated.setName("UpdatedName");
         updated.setRoles(Collections.singletonList(Role.ROLE_ADMIN));
+        String updatedJson = UserTestData.jsonWithPassword(updated, updated.getPassword());
+        mockMvc.perform(put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(updatedJson))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        assertMatch(userService.get(USER_ID), updated);
+    }
+
+    @Test
+    public void testNotValidUpdate() throws Exception {
+        User updated = new User(USER);
+        updated.setName("");
         mockMvc.perform(put(REST_URL + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
                 .content(JsonUtil.writeValue(updated)))
-                .andExpect(status().isOk());
-
-        assertMatch(userService.get(USER_ID), updated);
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -102,6 +116,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(ADMIN))
                 .content(UserTestData.jsonWithPassword(expected, "newPass")))
+                .andDo(print())
                 .andExpect(status().isCreated());
 
         User returned = TestUtil.readFromJson(action, User.class);
@@ -109,6 +124,17 @@ public class AdminRestControllerTest extends AbstractControllerTest {
 
         assertMatch(returned, expected);
         assertMatch(userService.getAll(), ADMIN, expected, USER);
+    }
+
+    @Test
+    public void testNotValidCreate() throws Exception {
+        User created = new User(null, "New", "new@", "newPass", 1, Role.ROLE_USER, Role.ROLE_ADMIN);
+        mockMvc.perform(post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(ADMIN))
+                .content(UserTestData.jsonWithPassword(created, "newPass")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
