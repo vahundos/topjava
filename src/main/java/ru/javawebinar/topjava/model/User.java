@@ -6,6 +6,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
+import ru.javawebinar.topjava.web.validator.UniqueEmail;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -25,6 +26,7 @@ import static ru.javawebinar.topjava.util.UserUtil.DEFAULT_CALORIES_PER_DAY;
 @Entity
 //@NamedEntityGraph(name = User.GRAPH_WITH_MEALS, attributeNodes = {@NamedAttributeNode("meals")})
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
+@UniqueEmail
 public class User extends AbstractNamedEntity {
 
 //    public static final String GRAPH_WITH_MEALS = "User.withMeals";
