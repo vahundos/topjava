@@ -1,0 +1,17 @@
+package ru.javawebinar.topjava.web.validator;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Constraint(validatedBy = UniqueUserMealOnDateValidator.class)
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface UniqueUserMealOnDate {
+    String message() default "email already exist";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}
